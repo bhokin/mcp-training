@@ -11,8 +11,14 @@ Key concepts:
 
 from fastmcp import FastMCP
 
+# 1. Create the MCP server instance with a name
 mcp = FastMCP("Hello MCP")
 
+
+# 2. Use @mcp.tool() to register a function as an MCP tool.
+#    - The function name becomes the tool name
+#    - The docstring becomes the tool description (LLMs read this!)
+#    - Type hints define the input schema automatically
 
 @mcp.tool()
 def greet(name: str) -> str:
@@ -32,5 +38,6 @@ def reverse_string(text: str) -> str:
     return text[::-1]
 
 
+# 3. Run the server using stdio transport (default for local/Claude Desktop use)
 if __name__ == "__main__":
     mcp.run()
