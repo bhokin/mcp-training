@@ -1,9 +1,27 @@
 import sqlite3
 from fastmcp import FastMCP
+from fastmcp.server.auth.providers.jwt import StaticTokenVerifier
 from config import DB_PATH
 
+
+# ── Authentication ────────────────────────────────────────────────────────────
+
+verifier = StaticTokenVerifier(
+    tokens={
+        "main-plant-token": {
+            "client_id": "alice@company.com",
+            "scopes": ["read:data", "write:data", "admin:users"],
+        },
+        "sub-plant-token": {
+            "client_id": "bob@company.com",
+            "scopes": [],
+        },
+    },
+    required_scopes=["read:data"],
+)
+
 # Each MCP server is its own FastMCP instance with a descriptive name
-hr_mcp = FastMCP("HR & Projects")
+hr_mcp = FastMCP("HR & Projects", auth=verifier)
 
 
 def _get_conn() -> sqlite3.Connection:
