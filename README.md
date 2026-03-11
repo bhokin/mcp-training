@@ -58,8 +58,37 @@ uvicorn main:app --reload
 
 ---
 
-## Testing with MCP Inspector
+## Testing
+
+### 1. MCP Inspector
 
 1. Start your server
 2. Open a new terminal, thn run `fastmcp dev inspector server.py`
 3. Connect to your server and call tools interactively
+
+### 2. Claude Desktop (MCP Client)
+
+1. Go to Settings -> Developer -> Edit Config
+2. Add your MCP to `claude_desktop_config.json`
+    ```json
+    {
+      "mcpServers": {
+        // stdio
+        "hello-mcp": {
+          "command": "python",
+          "args": ["path/to/your/server.py"]
+        },
+
+        // Streamable HTTP
+        "mcp-prod": {
+          "command": "npx",
+          "args": [
+            "mcp-remote",
+            "https://mcp-server-url.com/mcp"
+            "--header",
+            "Authorization: Bearer main-plant-token"
+          ]
+        }
+      }
+    }
+    ```
