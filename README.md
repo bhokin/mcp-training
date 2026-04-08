@@ -92,3 +92,7 @@ uvicorn main:app --reload
       }
     }
     ```
+
+
+## Database Schema
+![Alt text](schema.png)
