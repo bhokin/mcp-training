@@ -22,12 +22,14 @@ from config import APP_TITLE, APP_DESCRIPTION, APP_VERSION
 from routers.health import router as health_router
 from mcp_servers.hr import hr_mcp
 from mcp_servers.utility import utility_mcp
+from mcp_servers.database import database_mcp
 
 
 # ── Build MCP ASGI apps ───────────────────────────────────────────────────────
 
 hr_app = hr_mcp.http_app(stateless_http=True)
 utility_app = utility_mcp.http_app(stateless_http=True)
+database_app = database_mcp.http_app(stateless_http=True)
 
 
 # ── FastAPI app ───────────────────────────────────────────────────────────────
@@ -40,6 +42,7 @@ app = FastAPI(
     lifespan=combine_lifespans(
         hr_app.lifespan,
         utility_app.lifespan,
+        database_app.lifespan,
     ),
 )
 
@@ -51,6 +54,8 @@ app.include_router(health_router)
 # MCP path patterns: {host}:{port}/{path}/mcp
 #   http://localhost:8000/hr/mcp
 #   http://localhost:8000/utility/mcp
+#   http://localhost:8000/database/mcp
 
 app.mount("/hr", hr_app)
 app.mount("/utility", utility_app)
+app.mount("/database", database_app)
